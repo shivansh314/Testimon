@@ -1,0 +1,16 @@
+{
+  "name": "clear",
+  "version": "1.0.0",
+  "description": "app for taking user testimonial ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "user",
+    "feedback",
+    "shivansh"
+  ],
+  "author": "Shivansh Barthwal",
+  "license": "ISC"
+}
