@@ -1,0 +1,17 @@
+step 1 - setting up the project 
+ 
+ - downloading requires packages 
+ - setup express and cors 
+ - setup dotenv 
+ - connect database 
+ - setup utility function 
+ 
+
+step 2 - setting up user and user controller 
+
+ - create database for the user 
+ - create CRUD operation for the user in the controller 
+ - multer and Cloudinary
+ - setup authentication and authorization 
+ - setup user route
+ 
