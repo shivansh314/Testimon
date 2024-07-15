@@ -9,7 +9,7 @@ const spaceRouter = Router();
 //create space
 spaceRouter.route("/createSpace").post(
 
-
+  verifyJWT,
   upload.fields([
     {
       name: "logo",

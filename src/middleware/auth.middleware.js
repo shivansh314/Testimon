@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js"
 import jwt from "jsonwebtoken"
 import { User } from "../models/user.model.js"
 
-const verifyJWT = asyncHandler(async(req, res ) => {
+const verifyJWT = asyncHandler(async(req, res , next) => {
     try {
       // getting the access token for the user cookies
       const accessToken =
