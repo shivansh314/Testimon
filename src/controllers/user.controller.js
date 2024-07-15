@@ -5,7 +5,7 @@ import { User } from "../models/user.model.js";
 import {
   uploadOnCloudinary,
 } from "../utils/Cloudinary.js";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"; 
 
 const generateAccessAndRefreshToken = async(userId) => {
     try {
@@ -28,6 +28,7 @@ const registerUser = asyncHandler( async(req , res) => {
     // get details from the user 
     const { username , fullName , email , password } = req.body;
 
+
     //validation 
     if ( 
         [fullName , username , email , password ].some((field)=>field?.trim()==="")
@@ -36,16 +37,18 @@ const registerUser = asyncHandler( async(req , res) => {
     }
 
     // check if user already exists 
-    const existingUser = User.findOne({
-        $or : [ {username} , {email}],
-    });
+     const existedUser = await User.findOne({
+       $or: [{ username }, { email }],
+     });
 
-    if ( existingUser ) {
-        throw new ApiError( 409 , "user already exists ");
-    }
-
+     if (existedUser) {
+       throw new ApiError(409, "User with email or username already exists");
+     }
+    
+    
+   
     // check for avatar image 
-    const avatarImagePath = req.file.path;
+    const avatarImagePath = req.files.avatar[0].path;
     console.log(avatarImagePath);
 
     if(!avatarImagePath){
@@ -68,6 +71,7 @@ const registerUser = asyncHandler( async(req , res) => {
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
     )
+    
 
     if(!createdUser){
         throw new ApiError(500 , "Something went wrong while registering the user ")

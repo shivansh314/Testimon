@@ -1,13 +1,42 @@
-import {Schema} from "mongoose"
+import mongoose, {Schema} from "mongoose"
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 
-const spaceSchema = new Schema({
-
-},
-{
-    timestamps : true
-}
-)
 
 
-export const Spaces = mongoose.model( "Spaces" , spaceSchema)
+const spaceSchema = new Schema(
+  {
+    projectName: {
+      type: String,
+      requried: true,
+    },
+    title: {
+      type: String,
+      requried: true,
+    },
+    logo: {
+      type: String,
+      requried: true,
+    },
+    customMessage: {
+      type: String,
+      requried: true,
+    },
+    questions: {
+      type: Array,
+      requried: true,
+    },
+    owner :{
+        type : Schema.Types.ObjectId,
+        ref : "User"
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
+
+spaceSchema.plugin(mongooseAggregatePaginate);
+
+
+export const Space = mongoose.model("Space", spaceSchema);

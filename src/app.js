@@ -15,4 +15,13 @@ app.use(express.static("public"))
 
 app.use(cookieParser())
 
+//routing
+import router from './routes/user.routes.js'
+import spaceRouter from "./routes/space.routes.js";
+
+
+app.use("/api/v1/users", router)
+app.use("/api/v1/spaces" , spaceRouter)
+
+
 export { app }
