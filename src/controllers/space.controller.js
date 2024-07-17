@@ -28,7 +28,7 @@ const createSpace = asyncHandler(async (req, res) => {
   // get logo image
 
   const logoLocalPath = req.files.logo[0].path;
-  console.log(logoLocalPath);
+  
   if (!logoLocalPath) {
     throw new ApiError(400, "Logo image is missing ");
   }
@@ -51,7 +51,8 @@ const createSpace = asyncHandler(async (req, res) => {
   });
 
   const createdSpace = await Space.findById(space._id);
-
+  const reviewLink = `http://localhost:8000/api/v1/reviews/${createdSpace._id}`;
+  
   // return  response
   return res
     .status(200)
@@ -70,6 +71,7 @@ const updateSpace = asyncHandler(async (req, res) => {
   ) {
     throw new ApiError(400, "all fields are required");
   }
+
 
   // update space
   const updatedSpace = Space.findByIdAndUpdate(

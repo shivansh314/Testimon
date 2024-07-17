@@ -49,8 +49,7 @@ const registerUser = asyncHandler( async(req , res) => {
    
     // check for avatar image 
     const avatarImagePath = req.files.avatar[0].path;
-    console.log(avatarImagePath);
-
+    
     if(!avatarImagePath){
         throw new ApiError( 400 , "Avatar file is missing ");
     }
@@ -86,7 +85,7 @@ const registerUser = asyncHandler( async(req , res) => {
 const loginUser = asyncHandler(async (req, res) => {
   //request body from user
   const { email, username, password } = req.body; 
-  console.log(email, password, username);
+
 
   if (!username || !email) {
     throw new ApiError(400, " username or email is required");
@@ -105,8 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // check password
   
   const isPasswordCorrect = await user.isPasswordCorrect(password);
-  console.log(isPasswordCorrect);
-
+  
   if (!isPasswordCorrect) {
     throw new ApiError(401, "Invalid user Credentials");
   }
@@ -118,8 +116,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // send cookies
   const loggedinUser = await User.findById(user._id);
-  console.log(loggedinUser);
-
+  
   const options = {
     // cookies option
     httpOnly: true,
