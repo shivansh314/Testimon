@@ -1,3 +1,4 @@
+import { text } from "express";
 import mongoose, {Schema} from "mongoose"
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
@@ -29,6 +30,10 @@ const spaceSchema = new Schema(
     owner :{
         type : Schema.Types.ObjectId,
         ref : "User"
+    } ,
+    link : {
+      type : String,
+      requried : true ,
     }
   },
   {

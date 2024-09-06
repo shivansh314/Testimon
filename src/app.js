@@ -1,8 +1,12 @@
+// for routing , cors and necessary middleware
+
 import express from "express"
 import cors from "cors"
 import cookieParser  from "cookie-parser"
 
 const app = express();
+
+// app.use() - this is used to define middleware that runs on every request regardless of the method
 
 app.use(cors({
     origin : process.env.CORS_ORIGIN,

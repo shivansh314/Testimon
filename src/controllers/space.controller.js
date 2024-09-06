@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import { Space } from "../models/space.model.js";
-import { User } from "../models/user.model.js";
+
 
 // create
 
@@ -40,6 +40,8 @@ const createSpace = asyncHandler(async (req, res) => {
     throw new ApiError(500, "error while uploading on cloudinary ");
   }
 
+  
+
   // store in the database
   const space = await Space.create({
     projectName,
@@ -48,16 +50,27 @@ const createSpace = asyncHandler(async (req, res) => {
     logo: logoCloudinaryLink.url,
     questions,
     owner: req.user?._id,
+    
   });
 
-  const createdSpace = await Space.findById(space._id);
-  const reviewLink = `http://localhost:8000/api/v1/reviews/${createdSpace._id}`;
+  const reviewLink = `http://localhost:8000/api/v1/reviews/${space._id}`;
+
+  const updatedSpace = await Space.findByIdAndUpdate(
+    space._id,
+    { $set: { link: reviewLink } },
+    { new: true } // returns the updated document
+  );
+
   
   // return  response
   return res
     .status(200)
-    .json(new ApiResponse(200, createdSpace, " space created successfully "));
+    .json(new ApiResponse(200, 
+      updatedSpace, 
+        " space created successfully "));
 });
+
+
 
 const updateSpace = asyncHandler(async (req, res) => {
   // get information
@@ -95,5 +108,8 @@ const updateSpace = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedSpace, " space updated successfully"));
 });
+
+
+
 
 export { createSpace, updateSpace };

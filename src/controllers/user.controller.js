@@ -86,7 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
   //request body from user
   const { email, username, password } = req.body; 
 
-
+  // check if username and email is found 
   if (!username || !email) {
     throw new ApiError(400, " username or email is required");
   }
@@ -168,7 +168,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async(req , res) => {
-    return res
+  return res
     .status(200)
     .json( new ApiResponse(200 , req.user , 
         "current user fetched successfully"
@@ -223,10 +223,14 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
+
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   refreshAccessToken,
   getCurrentUser,
+  
 };
+
