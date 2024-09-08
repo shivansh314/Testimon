@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
 
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -27,13 +28,12 @@ const uploadOnCloudinary = async (localFilePath) => {
 
 const deleteFromCloudinary = async (fileToDelete) => {
   try {
-    const response = await cloudinary.uploader.destroy(fileToDelete, {
-      resource_type: "image",
-    });
+    const response = await cloudinary.uploader.destroy(fileToDelete);
     return response;
   } catch (error) {
+    console.error("Error deleting file from Cloudinary: ", error);
     return null;
   }
 };
 
-export { uploadOnCloudinary, deleteFromCloudinary };
+export { uploadOnCloudinary, deleteFromCloudinary  };

@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { createSpace, updateSpace } from "../controllers/space.controller.js";
+import { createSpace, getSpaces, updateSpace , deleteSpace} from "../controllers/space.controller.js";
 
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 
 const spaceRouter = Router();
 
-//create space
+//create space 
 spaceRouter.route("/createSpace").post(
 
   verifyJWT,
@@ -22,10 +22,26 @@ spaceRouter.route("/createSpace").post(
 
 // updateSpace 
 
-spaceRouter.route("/updateSpace").post(
-    updateSpace
+spaceRouter.route("/updateSpace/:spaceId").post(
+  verifyJWT,
+  upload.fields([
+    {
+      name: "logo",
+      maxCount: 1,
+    },
+  ]),
+  updateSpace
+);
+
+
+// getSpaces
+
+spaceRouter.route("/getSpaces").get(
+  verifyJWT,
+  getSpaces
 )
 
+// delete the space by id 
 
-
+spaceRouter.route( "/deleteSpace/:spaceId").delete(verifyJWT , deleteSpace);
 export default spaceRouter;

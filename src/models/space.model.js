@@ -27,14 +27,26 @@ const spaceSchema = new Schema(
       type: Array,
       requried: true,
     },
-    owner :{
-        type : Schema.Types.ObjectId,
-        ref : "User"
-    } ,
-    link : {
-      type : String,
-      requried : true ,
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    link: {
+      type: String,
+      requried: true,
+    },
+
+    requiredFields: {
+      name: { type: Boolean, default: true },
+      email: { type: Boolean, default: true },
+      company: { type: Boolean, default: false },
+    },
+
+    starRating : {
+      type : Boolean , 
+      default : true 
     }
+
   },
   {
     timestamps: true,
