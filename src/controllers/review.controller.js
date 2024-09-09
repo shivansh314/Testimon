@@ -32,7 +32,8 @@ const createReview = asyncHandler(async (req, res) => {
   }
 
   // upload on cloudinary and check
-  const videoCloudinaryLink = await uploadOnCloudinary(videoFile);
+  const folderName = 'videos';
+  const videoCloudinaryLink = await uploadOnCloudinary(videoFile , folderName);
   if (!videoCloudinaryLink) {
     throw new ApiError(400, "Could not upload the video on cloudinary");
   }

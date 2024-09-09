@@ -36,7 +36,8 @@ const createSpace = asyncHandler(async (req, res) => {
   }
 
   //uploading on cloudinary
-  const logoCloudinaryLink = await uploadOnCloudinary(logoLocalPath);
+  const folderName  = "space image"
+  const logoCloudinaryLink = await uploadOnCloudinary(logoLocalPath , folderName);
 
   if (!logoCloudinaryLink) {
     throw new ApiError(500, "error while uploading on cloudinary ");
@@ -126,7 +127,8 @@ const updateSpace = asyncHandler(async (req, res) => {
     }
 
     const newLogoLocalPath = req.files.logo[0].path;
-    const newLogo = await uploadOnCloudinary(newLogoLocalPath);
+    const folderName = "space image"
+    const newLogo = await uploadOnCloudinary(newLogoLocalPath , folderName);
 
     if (!newLogo) {
       throw new ApiError(400, "Error while updating the image on Cloudinary");

@@ -1,14 +1,21 @@
 import { useState } from 'react'
-import LoginComponent from './components/LoginComponent'
+
 import './App.css'
+import SignUp from './components/SignUp.jsx'
+import { Outlet } from 'react-router-dom';
 
 function App() {
 
   return (
-    <>
-    <LoginComponent />
-    </>
-  )
+    <div >
+      <div>
+        
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 }
 
 export default App
