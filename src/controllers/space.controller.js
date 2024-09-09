@@ -7,7 +7,6 @@ import { Space } from "../models/space.model.js";
 
 
 // create Space
-
 const createSpace = asyncHandler(async (req, res) => {
   // get the data
   const { projectName, title, customMessage, questions , starRating , requiredFields } = req.body;
@@ -62,7 +61,7 @@ const createSpace = asyncHandler(async (req, res) => {
     
   });
 
-  const reviewLink = `http://localhost:8000/api/v1/reviews/${space._id}`;
+  const reviewLink = `http://localhost:8000/api/v1/reviews/createReview/${space._id}`;
 
   const updatedSpace = await Space.findByIdAndUpdate(
     space._id,
@@ -167,7 +166,7 @@ const updateSpace = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedSpace, "Space updated successfully"));
 });
 
-// get Spaces by id  
+// get Spaces of the user   
 const getSpaces = asyncHandler( async (req , res) => {
   // get the user id 
   const ownerID = req.user?._id
@@ -196,8 +195,31 @@ const getSpaces = asyncHandler( async (req , res) => {
 
 })
 
-// delete the space by id
+// get space by id
+const getSpaceById = asyncHandler( async(req , res ) => {
+   // get the space id
+   const { spaceId } = req.params
 
+   // check if the space id exist 
+   if ( !spaceId ){
+    throw new ApiError( 404 , " spaceId Not fouund ")
+   }
+
+   // find the space 
+   const space = await Space.findById(spaceId);
+
+   // check if the space exist 
+   if ( !space ){
+    throw new ApiError( 404 , "space not found ")
+   }
+
+   // return the space
+   return res.status(200)
+   .json( new ApiResponse(200 , space , ` space with id ${spaceId}`)
+   )
+})
+
+// delete the space by id
 const deleteSpace = asyncHandler( async( req , res ) => {
   // get the space id 
   const { spaceId } = req.params ;
@@ -245,4 +267,4 @@ const deleteSpace = asyncHandler( async( req , res ) => {
 
 
 
-export { createSpace, updateSpace , getSpaces , deleteSpace};
+export { createSpace, updateSpace , getSpaces , deleteSpace , getSpaceById};

@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { createSpace, getSpaces, updateSpace , deleteSpace} from "../controllers/space.controller.js";
+import { createSpace, getSpaces, updateSpace , deleteSpace
+  , getSpaceById
+} from "../controllers/space.controller.js";
 
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
@@ -42,6 +44,8 @@ spaceRouter.route("/getSpaces").get(
 )
 
 // delete the space by id 
+spaceRouter.route("/getSpaceById/:spaceId").get(getSpaceById);
 
+// delete space 
 spaceRouter.route( "/deleteSpace/:spaceId").delete(verifyJWT , deleteSpace);
 export default spaceRouter;
