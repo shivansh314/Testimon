@@ -4,18 +4,18 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { deleteFromCloudinary, uploadOnCloudinary  } from "../utils/Cloudinary.js";
 import { Space } from "../models/space.model.js";
 
-
+ 
 
 // create Space
 const createSpace = asyncHandler(async (req, res) => {
   // get the data
-  const { projectName, title, customMessage, questions , starRating , requiredFields } = req.body;
-  const { name , email , company } = requiredFields;
+  const { projectName, title, customMessage, questions , starRating  , isSquare } = req.body;
+  // const { name , email , company } = requiredFields;
 
   
   if (
     [projectName, title, customMessage, questions , starRating].some((field) => {
-      field?.trim() === "";
+      field?.trim === "";
     })
   ) {
     throw new ApiError(400, "all fields are required");
@@ -53,12 +53,13 @@ const createSpace = asyncHandler(async (req, res) => {
     logo: logoCloudinaryLink.url,
     questions,
     owner: req.user?._id,
-    starRating : starRating, 
-    requiredFields : {
-      name , 
-      email , 
-      company ,
-    }
+    starRating : starRating,
+    isSquare , 
+    // requiredFields : {
+    //   name , 
+    //   email , 
+    //   company ,
+    // }
     
   });
 
@@ -82,7 +83,7 @@ const createSpace = asyncHandler(async (req, res) => {
 //update Space
 const updateSpace = asyncHandler(async (req, res) => {
   const { spaceId } = req.params;
-  const { projectName, title, customMessage , questions , starRating , requiredFields } = req.body;
+  const { projectName, title, customMessage , questions , starRating , requiredFields , isSquare} = req.body;
 
   // Destructure requiredFields
   const { name, email, company } = requiredFields;
@@ -153,6 +154,7 @@ const updateSpace = asyncHandler(async (req, res) => {
           company,
         },
         starRating,
+        isSquare
       },
     },
     { new: true } // returns the updated document
@@ -236,7 +238,7 @@ const deleteSpace = asyncHandler( async( req , res ) => {
   const existingSpace = await Space.findById(spaceId);
   const spaceOwner = existingSpace.owner;
 
-  if ( ownerId.toString() != spaceOwner.toString()){
+  if ( ownerId.toString() !== spaceOwner.toString()){
     throw new ApiError( 400 , " you cannot delete this space")
   }
 

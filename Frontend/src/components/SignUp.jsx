@@ -1,8 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
 
 import Input from "./Input.jsx";
 import Button from "./Button.jsx";
@@ -11,6 +11,7 @@ import Button from "./Button.jsx";
 const SignUp = ()=>{
     const { register , handleSubmit } = useForm()
     // const navigate = useNavigate()
+  // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
 
     const onSubmit = async(data) => {
@@ -43,7 +44,7 @@ const SignUp = ()=>{
     
     return (
       <div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center h-screen">
           <div
             className={`mx-auto w-full max-w-lg bg-white-100 rounded-xl p-20 border border-black/10`}
           >

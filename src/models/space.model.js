@@ -44,6 +44,11 @@ const spaceSchema = new Schema(
     starRating : {
       type : Boolean , 
       default : true 
+    } , 
+
+    isSquare : {
+      type : Boolean ,
+      default : false 
     }
 
   },
