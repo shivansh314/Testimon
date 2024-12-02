@@ -1,18 +1,18 @@
-// src/components/LoginForm.jsx
+// src/components/LoginComponent.jsx
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {useNavigate , Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { login as authLogin } from "../store/authSlice";
+import {  login  } from "../store/authSlice.js";
 
-const LoginForm = () => {
+const LoginComponent = () => {
   const { register,handleSubmit, formState: { errors }} = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate()
  
 
-  const onSubmit = async (data) => {4
+  const onSubmit = async (data) => {
     try {
       // Make the login request to your backend
       const response = await axios.post(
@@ -24,8 +24,11 @@ const LoginForm = () => {
       );
 
       // Handle successful login (e.g., store user info or redirect)
-      const userData = response.data ; 
-      if ( userData ) dispatch(authLogin(userData))
+      const userData = response.data ;
+      // console.log(userData);
+      if ( userData ){
+        dispatch(login({ userData }));
+      }
       navigate("/")
       alert("Login successful");
       
@@ -39,7 +42,7 @@ const LoginForm = () => {
   return (
     <div className=" h-screen w-screen flex justify-center items-center">
       <div className="sm:mx-auto sm:w-full sm:max-w-md flex justify-center items-center flex-col">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6text-center text-3xl font-semibold font-manrope leading-tight opacity-90">
           Sign in to your account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 max-w ">
@@ -96,7 +99,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Log in
             </button>
@@ -107,4 +110,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LoginComponent;

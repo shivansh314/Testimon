@@ -8,7 +8,7 @@ import { upload } from "../middleware/multer.middleware.js";
 
 const spaceRouter = Router();
 
-//create space 
+//create forms
 spaceRouter.route("/createSpace").post(
 
   verifyJWT,
@@ -43,9 +43,9 @@ spaceRouter.route("/getSpaces").get(
   getSpaces
 )
 
-// delete the space by id 
+// delete the forms by id
 spaceRouter.route("/getSpaceById/:spaceId").get(getSpaceById);
 
-// delete space 
+// delete forms
 spaceRouter.route( "/deleteSpace/:spaceId").delete(verifyJWT , deleteSpace);
 export default spaceRouter;

@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useForm } from "react-hook-form";
-import Input from "./Input.jsx";
+import Input from "../Input.jsx";
 import Rating from '@mui/material/Rating';
 import { data } from "autoprefixer";
 import axios from "axios";
+import {Link , useNavigate} from "react-router-dom";
 
 const Modal = ({ onClose, post }) => {
   const { register, handleSubmit } = useForm();
   const [rating, setStar] = useState(0);
+  const navigate = useNavigate()
 
   const handleRatingChange = (event, newRating) => {
     setStar(newRating);
   };
 
 
-  const submit = async (data) => {
+  const submit = async (data ) => {
     const payload = {
       name: data.name,
       email: data.email,
@@ -23,17 +25,20 @@ const Modal = ({ onClose, post }) => {
       starRating: rating,
       review: data.review,
     };
-    console.log(data);
+    // console.log(data);
 
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/reviews/createReview/${post._id.$oid}`,
+      const response = await axios.post(`http://localhost:8000/api/v1/reviews/createReview/${post._id}`,
         payload,
         {
           withCredentials: true,
           headers: { 'Content-Type': 'application/json' }
         });
 
-      console.log(response);
+      // TODO : fix the navigating issue
+
+      navigate(`/reviews/createReview/${post._id}`);
+
     } catch (error) {
       if (error.response) {
         // The request was made, and the server responded with a status code

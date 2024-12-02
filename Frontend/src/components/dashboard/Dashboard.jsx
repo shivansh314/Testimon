@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const Dashboard = () => {
 
   const [sentimentResults, setSentimentResults] = useState([]);
@@ -36,9 +37,8 @@ const Dashboard = () => {
         const reviewArray = reviews.map((review) => ({ review }));
         const response = await axios.post("http://127.0.0.1:5000/sentiment", reviewArray);
         const results = response.data.sentiment_results;
-
         setSentimentResults(results);
-        
+
       } catch (error) {
         console.error("Error analyzing sentiment:", error);
       }
@@ -51,8 +51,16 @@ const Dashboard = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Sentiment Analysis Dashboard</h1>
+      {sentimentResults.map((item, index) => (
+          <div key={index} className="mb-4">
+            <h1 className="text-sm text-purple-600">{item.review}</h1>
+            <h1 className="text-sm">{`${item.sentiment} Review ${index + 1}: Sentiment Score = ${item.sentiment_score} `}</h1>
+          </div>
+        )
+      )}
     </div>
-  );
+  )
+    ;
 };
 
 export default Dashboard;

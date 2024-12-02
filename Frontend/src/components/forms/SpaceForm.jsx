@@ -11,14 +11,15 @@ import axios from "axios";
 function SpaceForm({post}) {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues : {
-      projectName : post?.projectName || "Testimon" ,
-      title : post?.title  || "Did you like Testimon ?",
-      customMessage : post?.customMessage ||  "this application makes taking client credential easier ",
-      questions : post?.questions || [ "what is you name ?" , "how did you know about testimon ?" , "What do you do ?" ],
+      projectName : post?.projectName || "" ,
+      title : post?.title  || " ",
+      customMessage : post?.customMessage ||  " ",
+      questions : post?.questions || [  ],
       starRating : post?.starRating || true ,
       isSquare : post?.isSquare || false ,
     }}
   );
+
   
   // submit form 
   const submit = async (data) => {
@@ -31,17 +32,18 @@ function SpaceForm({post}) {
     formData.append("starRating", data.starRating);
     formData.append("isSquare", data.isSquare);
 
+
+
     if ( post ) {
       try {
         const response = await axios.post(
-          ` http://localhost:8000/api/v1/spaces/updateSpace/${post._id}` ,
+          "http://localhost:8000/api/v1/spaces/updateSpace/${post._id.$oid}",
           formData,
           {
             withCredentials: true,
           }
         );
         console.log("successfully updated forms form");
-
       }
       catch (error){
         console.log(error.response?.data?.message || "updating forms failed ");
@@ -101,7 +103,7 @@ function SpaceForm({post}) {
   };
 
   //star rating boolean 
-  const [, setStarRating] = useState(true);
+  const [starRating , setStarRating] = useState(true);
   const toggleStarRating = () => {
     setStarRating((prev) => !prev);
   };
@@ -109,7 +111,7 @@ function SpaceForm({post}) {
 
 
   return (
-    <div className="h-auto w-screen flex flex-row items-center justify-center mt-8 overflow-x-hidden">
+    <div className="h-auto w-screen flex flex-row items-center justify-center mt-3 ">
       {/* Live preview of testimonial form */}
       <div className="w-[400px] mr-4 bg-[#25282C] rounded-lg p-9 pb-10">
         <div className="bg-green-200 text-green-800 text-sm font-semibold rounded-full px-3 py-1 w-max mx-auto relative bottom-12 right-20">
@@ -117,7 +119,7 @@ function SpaceForm({post}) {
         </div>
 
         <div className="flex justify-center">
-          {!previewUrl && !post?.logo? (
+          {!previewUrl && !post?.logo ? (
             <div
               className={`bg-black ${squareButton ? "rounded-none" : "rounded-full"} w-24 h-24 flex items-center justify-center `}
             ></div>
@@ -125,7 +127,8 @@ function SpaceForm({post}) {
             <img
               src={post?.logo || previewUrl}
               className={`${squareButton ? "rounded-none" : "rounded-full"} w-24 h-24 bg-cover`}
-             alt="preview image"/>
+              alt="preview image"
+            />
           )}
         </div>
 
@@ -138,7 +141,17 @@ function SpaceForm({post}) {
         <div className="text-white mt-12">
           <h2 className="font-semibold mb-2">QUESTIONS</h2>
           <div className="w-8 h-1 bg-indigo-600 mb-2"></div>
-          <ul className="list-disc">{listItems}</ul>
+          {post ? (
+            <div className="flex flex-col">
+              <ul className="list-disc">
+                {post.questions.map((question, index) => (
+                  <li key={index}>{question}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <ul className="list-disc">{listItems}</ul>
+          )}
         </div>
 
         <div className="mt-10 space-y-4">
@@ -156,7 +169,7 @@ function SpaceForm({post}) {
       <form onSubmit={handleSubmit(submit)}>
         <div className="w-[600px] bg-white p-6 rounded-lg shadow-md">
           <h1 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
-            { post ? "Edit Space" : "Create Space"}
+            {post ? "Edit Space" : "Create Space"}
           </h1>
 
           {/* project name */}
@@ -171,16 +184,17 @@ function SpaceForm({post}) {
 
           {/* image */}
           <div className="flex items-center mb-6">
-            {!previewUrl && !post?.logo ?
+            {!previewUrl && !post?.logo ? (
               <div
                 className={`bg-black ${squareButton ? "rounded-none" : "rounded-full"} w-16 h-16 flex items-center justify-center `}
               ></div>
-             :
+            ) : (
               <img
-                src= {post?.logo || previewUrl}
+                src={post?.logo || previewUrl}
                 className={`${squareButton ? "rounded-none" : "rounded-full"} w-16 h-16 bg-cover`}
-               alt="preview url"/>
-            }
+                alt="preview url"
+              />
+            )}
 
             <span className="ml-5 rounded-md shadow-sm">
               <input
@@ -254,25 +268,38 @@ function SpaceForm({post}) {
               className={`${questionNumber >= 3 ? "hidden" : "none"}`}
               disabled={questionNumber >= 3} // Disable button when 3 questions are added
             >
-              <AddCircleOutlineIcon 
-              className="opacity-85 bottom-1 left-1 relative  "
-              sx = {{
-                  height : '0.8em',
-                  width : '0.8em',        
-                 }}/>
+              <AddCircleOutlineIcon
+                className="opacity-85 bottom-1 left-1 relative  "
+                sx={{
+                  height: "0.8em",
+                  width: "0.8em",
+                }}
+              />
             </button>
           </div>
-
-          <div className="flex flex-col">
-            {Array.from({ length: questionNumber }).map((_, index) => (
-              <Input
-                key={index} // Ensure unique key
-                {...register(`questions[${index}]`)}
-                placeholder={`Question ${index + 1}`}
-                className="mb-3"
-              />
-            ))}
-          </div>
+          {post ? (
+            <div className="flex flex-col">
+              {post.questions.map((question, index) => (
+                <Input
+                  key={index} // Ensure unique key
+                  {...register(`questions[${index}]`)}
+                  placeholder={`Question ${index + 1}`}
+                  className="mb-3"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              {Array.from({ length: questionNumber }).map((_, index) => (
+                <Input
+                  key={index} // Ensure unique key
+                  {...register(`questions[${index}]`)}
+                  placeholder={`Question ${index + 1}`}
+                  className="mb-3"
+                />
+              ))}
+            </div>
+          )}
 
           <label>Collect star rating</label>
           <Switch

@@ -23,6 +23,8 @@ const reviewSchema = new Schema(
       required: true,
     },
     video: {
+      required : false ,
+      default : "empty string",
       type: String,
     },
     saved: {
@@ -39,6 +41,7 @@ const reviewSchema = new Schema(
     timestamps: true,
   }
 );
+
 
 reviewSchema.plugin(mongooseAggregatePaginate);
 

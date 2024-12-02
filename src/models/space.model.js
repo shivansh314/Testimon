@@ -35,12 +35,6 @@ const spaceSchema = new Schema(
       requried: true,
     },
 
-    requiredFields: {
-      name: { type: Boolean, default: true },
-      email: { type: Boolean, default: true },
-      company: { type: Boolean, default: false },
-    },
-
     starRating : {
       type : Boolean , 
       default : true 

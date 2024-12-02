@@ -16,5 +16,5 @@ connect_DB()
     });
   })
   .catch((err) => {
-    console.log("cONNECTION FAILED", err);
+    console.log("CONNECTION FAILED", err);
   });

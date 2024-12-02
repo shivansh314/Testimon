@@ -36,7 +36,7 @@ const createSpace = asyncHandler(async (req, res) => {
   }
 
   //uploading on cloudinary
-  const folderName  = "space image"
+  const folderName  = "forms image"
   const logoCloudinaryLink = await uploadOnCloudinary(logoLocalPath , folderName);
 
   if (!logoCloudinaryLink) {
@@ -54,18 +54,12 @@ const createSpace = asyncHandler(async (req, res) => {
     questions,
     owner: req.user?._id,
     starRating : starRating,
-    isSquare , 
-    // requiredFields : {
-    //   name , 
-    //   email , 
-    //   company ,
-    // }
-    
+    isSquare ,
   });
 
-  const reviewLink = `http://localhost:8000/api/v1/reviews/createReview/${space._id}`;
+  const reviewLink = `http://localhost:5173/reviews/createReview/${space._id}`;
 
-  const updatedSpace = await Space.findByIdAndUpdate(
+  const newSpace = await Space.findByIdAndUpdate(
     space._id,
     { $set: { link: reviewLink } },
     { new: true } // returns the updated document
@@ -76,17 +70,15 @@ const createSpace = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, 
-      updatedSpace, 
-        " space created successfully "));
+      newSpace,
+        " forms created successfully "));
 });
 
 //update Space
 const updateSpace = asyncHandler(async (req, res) => {
   const { spaceId } = req.params;
-  const { projectName, title, customMessage , questions , starRating , requiredFields , isSquare} = req.body;
+  const { projectName, title, customMessage , questions , starRating  , isSquare} = req.body;
 
-  // Destructure requiredFields
-  const { name, email, company } = requiredFields;
 
   // Check if all fields are present
   if (
@@ -103,15 +95,15 @@ const updateSpace = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid User");
   }
 
-  // Fetch the existing space to check ownership
+  // Fetch the existing forms to check ownership
   const existingSpace = await Space.findById(spaceId);
   if (!existingSpace) {
     throw new ApiError(404, "Space not found");
   }
 
-  // Check if the user is the owner of the space
+  // Check if the user is the owner of the forms
   if (existingSpace.owner.toString() !== ownerId.toString()) {
-    throw new ApiError(403, "You do not have permission to update this space");
+    throw new ApiError(403, "You do not have permission to update this forms");
   }
 
   // Update the photo on Cloudinary
@@ -128,7 +120,7 @@ const updateSpace = asyncHandler(async (req, res) => {
     }
 
     const newLogoLocalPath = req.files.logo[0].path;
-    const folderName = "space image"
+    const folderName = "forms image"
     const newLogo = await uploadOnCloudinary(newLogoLocalPath , folderName);
 
     if (!newLogo) {
@@ -138,7 +130,7 @@ const updateSpace = asyncHandler(async (req, res) => {
     // Extract the image URL from the Cloudinary response
     const logoUrl = newLogo.url; 
 
-  // Update the space in the database
+  // Update the forms in the database
   const updatedSpace = await Space.findByIdAndUpdate(
     spaceId,
     {
@@ -148,11 +140,6 @@ const updateSpace = asyncHandler(async (req, res) => {
         customMessage,
         questions,
         logo : logoUrl,
-        requiredFields: {
-          name,
-          email,
-          company,
-        },
         starRating,
         isSquare
       },
@@ -161,7 +148,7 @@ const updateSpace = asyncHandler(async (req, res) => {
   );
 
   if (!updatedSpace) {
-    throw new ApiError(500, "Error updating the space");
+    throw new ApiError(500, "Error updating the forms");
   }
 
   // Return response
@@ -199,38 +186,38 @@ const getSpaces = asyncHandler( async (req , res) => {
 
 })
 
-// get space by id
+// get forms by id
 const getSpaceById = asyncHandler( async(req , res ) => {
-   // get the space id
+   // get the forms id
    const { spaceId } = req.params
 
-   // check if the space id exist 
+   // check if the forms id exist
    if ( !spaceId ){
     throw new ApiError( 404 , " spaceId Not fouund ")
    }
 
-   // find the space 
+   // find the forms
    const space = await Space.findById(spaceId);
 
-   // check if the space exist 
+   // check if the forms exist
    if ( !space ){
-    throw new ApiError( 404 , "space not found ")
+    throw new ApiError( 404 , "forms not found ")
    }
 
-   // return the space
+   // return the forms
    return res.status(200)
    .json( new ApiResponse(200 , space , ` space with id ${spaceId}`)
    )
 })
 
-// delete the space by id
+// delete the forms by id
 const deleteSpace = asyncHandler( async( req , res ) => {
-  // get the space id 
+  // get the forms id
   const { spaceId } = req.params ;
 
-  // check if space id is present 
+  // check if forms id is present
   if ( !spaceId ){
-    throw new ApiError(404 , "could not find space id to delete ")
+    throw new ApiError(404 , "could not find forms id to delete ")
   } 
 
   // check if the owner is verified 
@@ -239,7 +226,7 @@ const deleteSpace = asyncHandler( async( req , res ) => {
   const spaceOwner = existingSpace.owner;
 
   if ( ownerId.toString() !== spaceOwner.toString()){
-    throw new ApiError( 400 , " you cannot delete this space")
+    throw new ApiError( 400 , " you cannot delete this forms")
   }
 
   // delete the logo from the cloudinary 
@@ -256,15 +243,15 @@ const deleteSpace = asyncHandler( async( req , res ) => {
     throw new ApiError( 400 , "Could not delete the logo from cloudinary ")
   }
 
-  // delete the space from space from database 
+  // delete the forms from database
   const deleteSpace = await Space.findByIdAndDelete(spaceId);
 
-  // check if the space is deletes 
+  // check if the forms is deleting
   if (!deleteSpace){
-     throw new ApiError( 400 , " Could not delete the space")     
+     throw new ApiError( 400 , " Could not delete the forms")
   }
 
-  return res.status(200).json( new ApiResponse( 200 , "' space delted succesfully "))
+  return res.status(200).json( new ApiResponse( 200 , "' forms deleted successfully "))
  
 })
 

@@ -10,13 +10,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      (state.status = true), 
-      (state.userData = action.payload.userData);
+      state.status = true;   // Correctly update state
+      state.userData = action.payload.userData;   // Correctly update userData
     },
 
     logout: (state) => {
-      (state.status = false), 
-      (state.userData = null);
+      state.status = false;  // Correctly update status
+      state.userData = null;  // Correctly reset userData
     },
   },
 });

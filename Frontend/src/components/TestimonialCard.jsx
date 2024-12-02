@@ -1,7 +1,7 @@
 import { React , useState } from "react";
 import DoneIcon from '@mui/icons-material/Done';
 
-const Testimonial = () => {
+const TestimonialCard = () => {
 
 
   return (
@@ -24,4 +24,4 @@ const Testimonial = () => {
 };
 
 
-export default Testimonial;
+export default TestimonialCard;

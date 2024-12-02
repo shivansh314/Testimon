@@ -1,12 +1,13 @@
 import './App.css'
 import { Outlet } from 'react-router-dom';
+import Header from "./components/Header/Header.jsx"
 
 function App() {
 
   return (
-    <div >
-      <div className='overflow-x-hidden'>
-        
+    <div className=" overflow-x-hidden scroll-smooth">
+      <div className=" ">
+        <Header />
         <main>
           <Outlet />
         </main>
