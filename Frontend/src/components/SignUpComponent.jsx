@@ -8,7 +8,7 @@ import Input from "./Input.jsx";
 import Button from "./Button.jsx";
 
 
-const SignUp = ()=>{
+const SignUpComponent = ()=>{
     const { register , handleSubmit } = useForm()
     // const navigate = useNavigate()
   // eslint-disable-next-line no-unused-vars
